@@ -10,8 +10,10 @@ jobs:
   fetch:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout data branch
         uses: actions/checkout@v4
+        with:
+          ref: data
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -30,4 +32,4 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com" # TODO: fix bot credentials
           git add data/*.csv
           git commit -m "Add data point $(date -u +'%d.%m.%Y %H:%M:%S')" || echo "No changes to commit" # TODO: Fix commit msg and branch
-          git push
+          git push origin HEAD:data
