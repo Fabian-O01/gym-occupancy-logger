@@ -19,8 +19,7 @@ def main():
     day_list = json.loads(day_match.group(1))
     
     # get time in correct format
-    locale.setlocale(locale.LC_TIME, "de_DE")
-    today = datetime.date.today().strftime("%x")
+    today = datetime.date.today().strftime("%d.%m.%Y")
 
     # write data to CSV file
     with open("data/gym_log_daily.csv", "a", newline="") as f:
@@ -40,7 +39,7 @@ def main():
         with open("data/gym_log_weekly.csv", "a", newline="") as f:
             writer = csv.writer(f)
             for i in range(7):
-                date = datetime.date.fromtimestamp(time.time() + 60*60*24*i).strftime("%x") # horriffic, I know
+                date = datetime.date.fromtimestamp(time.time() + 60*60*24*i).strftime("%d.%m.%Y") # horriffic, I know
                 writer.writerow([date] + week_list[i])
 
 if __name__ == "__main__":
