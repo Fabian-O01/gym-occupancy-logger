@@ -1,0 +1,33 @@
+name: Fetch gym occupancy
+
+on:
+  schedule:
+    # every day a little after 11 pm 
+    - cron: "10 21 * * *" # UTC time
+  workflow_dispatch:   # allow manual runs
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run fetch script
+        run: python fetch_gym_data.py
+
+      - name: Commit & push updated CSV
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com" # TODO: fix bot credentials
+          git add data/*.csv
+          git commit -m "Add data point $(date -u +'%d.%m.%Y %H:%M:%S')" || echo "No changes to commit" # TODO: Fix commit msg and branch
+          git push
