@@ -4,7 +4,6 @@ import time
 import requests
 import re
 import json
-import locale
 
 URL = "https://www.fitx.de/fitnessstudios/berlin-tempelhof"
 

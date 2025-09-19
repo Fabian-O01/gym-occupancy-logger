@@ -10,11 +10,11 @@ jobs:
   fetch:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout data branch
+      - name: Checkout main code
         uses: actions/checkout@v4
         with:
-          ref: data
-
+          ref: main            # get the newest script from main
+        
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -28,8 +28,12 @@ jobs:
 
       - name: Commit & push updated CSV
         run: |
+          git fetch origin data
+          git checkout data
+          git pull origin data
+          cp ../data/gym_log_daily.csv data/gym_log_daily.csv # TODO: weekly
           git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com" # TODO: fix bot credentials
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/*.csv
-          git commit -m "Add data point $(date -u +'%d.%m.%Y %H:%M:%S')" || echo "No changes to commit" # TODO: Fix commit msg and branch
-          git push origin HEAD:data
+          git commit -m "Add data point $(date -u +'%d.%m.%Y %H:%M:%S')" || echo "No changes to commit"
+          git push origin data
