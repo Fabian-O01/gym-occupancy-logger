@@ -26,7 +26,7 @@ def main():
         writer.writerow([today] + day_list)
 
     # also fetch predicted visitor counts for the week on monday
-    if datetime.date.today().weekday() >= 0:
+    if datetime.date.today().weekday() == 0:
         week_match = re.search(r'data-visitordata="(\[\[.*?\]\])"', r.text)
 
         if not week_match:
@@ -38,7 +38,7 @@ def main():
         with open("data/gym_log_weekly.csv", "a", newline="") as f:
             writer = csv.writer(f)
             for i in range(7):
-                date = datetime.date.fromtimestamp(time.time() + 60*60*24*i).strftime("%d.%m.%Y") # horriffic, I know
+                date = datetime.date.fromtimestamp(time.time() + 60*60*24*i + 60*60*2).strftime("%d.%m.%Y") # horriffic, I know
                 writer.writerow([date] + week_list[i])
 
 if __name__ == "__main__":
